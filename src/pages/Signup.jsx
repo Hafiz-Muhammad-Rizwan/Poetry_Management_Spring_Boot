@@ -48,7 +48,7 @@ const Signup = () => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:8080/users/Signup', {
+            const response = await fetch('https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/users/Signup', {
                 
                 method: 'POST',
                 headers: {
