@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { authFetch } from '../services/authService';
 
 const AddPoet = () => {
     const [poets, setPoets] = useState([]);
@@ -20,7 +21,7 @@ const AddPoet = () => {
     }, []);
 
     const fetchPoets = () => {
-        fetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/getPoets")
+        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/getPoets")
             .then(res => res.json())
             .then(data => setPoets(data))
             .catch(err => console.error("Error fetching poets:", err));
@@ -49,7 +50,7 @@ const AddPoet = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this poet?")) return;
 
-        fetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/deletePoet/${id}`, { method: "DELETE" })
+        authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/deletePoet/${id}`, { method: "DELETE" })
             .then(() => {
                 setPoets(prev => prev.filter(poet => poet.poetId !== id));
             })
@@ -65,9 +66,8 @@ const AddPoet = () => {
 
         const method = isEditing ? "PUT" : "POST";
 
-        fetch(url, {
+        authFetch(url, {
             method,
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         })
             .then(res => {

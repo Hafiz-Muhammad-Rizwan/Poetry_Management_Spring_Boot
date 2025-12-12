@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { authFetch } from '../services/authService';
 
 const AddPoem = () => {
     const [poems, setPoems] = useState([]);
@@ -28,21 +29,21 @@ const AddPoem = () => {
     }, []);
 
     const fetchPoems = () => {
-        fetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/getPoems")
+        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/getPoems")
             .then(res => res.json())
             .then(data => setPoems(data))
             .catch(err => console.error("Error fetching poems:", err));
     };
 
     const fetchPoets = () => {
-        fetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/getPoets")
+        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/getPoets")
             .then(res => res.json())
             .then(data => setPoets(data))
             .catch(err => console.error("Error fetching poets:", err));
     };
 
     const fetchBooks = () => {
-        fetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
             .then(res => res.json())
             .then(data => setBooks(data))
             .catch(err => console.error("Error fetching books:", err));
@@ -77,7 +78,7 @@ const AddPoem = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this poem?")) return;
 
-        fetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/deletePoem/${id}`, { method: "DELETE" })
+        authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/deletePoem/${id}`, { method: "DELETE" })
             .then(() => {
                 setPoems(prev => prev.filter(poem => poem.poemId !== id));
             })
@@ -98,9 +99,8 @@ const AddPoem = () => {
         console.log("Payload (formData):", formData);
         console.log("JSON being sent:", JSON.stringify(formData));
 
-        fetch(url, {
+        authFetch(url, {
             method,
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         })
             .then(() => {
