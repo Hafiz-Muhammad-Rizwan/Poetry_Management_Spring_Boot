@@ -60,14 +60,23 @@ const Signup = () => {
                 })
             });
 
-            const data = await response.text();
-
             if (response.ok) {
-                // Show success message and redirect to login
-                alert('Registration successful! Please login.');
-                navigate('/login');
+                // Parse JSON response
+                const data = await response.json();
+                // If backend returns token on signup, store it
+                if (data.token) {
+                    const token = data.token;  // Get the token string
+                    localStorage.setItem('jwtToken', token);
+                    localStorage.setItem('username', data.username || formData.username);
+                    navigate('/');
+                } else {
+                    // Otherwise redirect to login
+                    alert('Registration successful! Please login.');
+                    navigate('/login');
+                }
             } else {
-                setError(data || 'Registration failed. Please try again.Frontend');
+                const errorData = await response.json();
+                setError(errorData.error || 'Registration failed. Please try again.');
             }
         } catch (err) {
             setError('Network error. Please try again later.');

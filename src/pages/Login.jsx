@@ -34,15 +34,17 @@ const Login = () => {
             });
 
             if (response.ok) {
-                const token = await response.text();
-                // Store token in localStorage
+                // Parse JSON and extract token field
+                const data = await response.json();
+                const token = data.token;  // Get the token string
+                // Store plain token in localStorage
                 localStorage.setItem('jwtToken', token);
-                localStorage.setItem('username', formData.username);
+                localStorage.setItem('username', data.username || formData.username);
                 // Redirect to home
                 navigate('/');
             } else {
-                const errorMsg = await response.text();
-                setError(errorMsg || 'Login failed. Please check your credentials.');
+                const errorData = await response.json();
+                setError(errorData.error || 'Login failed. Please check your credentials.');
             }
         } catch (err) {
             setError('Network error. Please try again later.');
