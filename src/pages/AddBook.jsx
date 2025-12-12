@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { authFetch } from '../services/authService';
 
 const AddBook = () => {
     const [books, setBooks] = useState([]);
@@ -15,7 +16,7 @@ const AddBook = () => {
     });
 
     useEffect(() => {
-        fetch("  https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
             .then(res => res.json())
             .then(data => setBooks(data))
             .catch(err => console.error("Error fetching books:", err));
@@ -41,7 +42,7 @@ const AddBook = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this book?")) return;
 
-        fetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/deleteBook/${id}`, { method: "DELETE" })
+        authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/deleteBook/${id}`, { method: "DELETE" })
             .then(() => {
                 setBooks(prev => prev.filter(book => book.BookId !== id));
             });
@@ -56,13 +57,12 @@ const AddBook = () => {
 
         const method = isEditing ? "PUT" : "POST";
 
-        fetch(url, {
+        authFetch(url, {
             method,
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         })
             .then(() => {
-                fetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+                authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
                     .then(res => res.json())
                     .then(data => setBooks(data));
                 setShowModal(false);
