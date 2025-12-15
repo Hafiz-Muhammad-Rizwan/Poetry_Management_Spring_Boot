@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { authFetch } from '../services/authService';
+import { API_ENDPOINTS } from '../services/api';
 
 const AddVerse = () => {
   const [verses, setVerses] = useState([]);
@@ -36,7 +37,7 @@ const AddVerse = () => {
 
     setLoadingPoems(prev => ({ ...prev, [poemId]: true }));
     
-    return authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/verses/getVerse/${poemId}`)
+    return authFetch(API_ENDPOINTS.GET_VERSES(poemId))
       .then((res) => res.json())
       .then((data) => {
         setPoemVerses(prev => ({ ...prev, [poemId]: data }));
@@ -51,14 +52,14 @@ const AddVerse = () => {
   };
 
   const fetchBooks = () => {
-    authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+    authFetch(API_ENDPOINTS.GET_BOOKS)
       .then((res) => res.json())
       .then((data) => setBooks(data))
       .catch((err) => console.error("Error fetching books:", err));
   };
 
   const fetchPoems = () => {
-    authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/getPoems")
+    authFetch(API_ENDPOINTS.GET_POEMS)
       .then((res) => res.json())
       .then((data) => setPoems(data))
       .catch((err) => console.error("Error fetching poems:", err));
@@ -96,7 +97,7 @@ const AddVerse = () => {
   const handleDelete = (id, poemId) => {
     if (!window.confirm("Are you sure you want to delete this verse?")) return;
 
-    authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/verses/deleteVerse/${id}`, {
+    authFetch(API_ENDPOINTS.DELETE_VERSE(id), {
       method: "DELETE",
     })
       .then(() => {
@@ -113,8 +114,8 @@ const AddVerse = () => {
     e.preventDefault();
 
     const url = isEditing
-      ? "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/verses/updateVerse"
-      : "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/verses/addVerse";
+      ? API_ENDPOINTS.UPDATE_VERSE
+      : API_ENDPOINTS.ADD_VERSE;
 
     const method = isEditing ? "PUT" : "POST";
     console.log("Sending request...");

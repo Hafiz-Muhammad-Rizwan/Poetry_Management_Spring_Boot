@@ -30,6 +30,9 @@ const Navbar = () => {
           <Link to="/add-book" className={`nav-link ${isActive('/add-book')}`}>Books</Link>
           <Link to="/add-poem" className={`nav-link ${isActive('/add-poem')}`}>Poems</Link>
           <Link to="/add-verse" className={`nav-link ${isActive('/add-verse')}`}>Verses</Link>
+          <Link to="/lemmas" className={`nav-link ${isActive('/lemmas')}`}>Lemmas</Link>
+          <Link to="/roots" className={`nav-link ${isActive('/roots')}`}>Roots</Link>
+          <Link to="/tokens" className={`nav-link ${isActive('/tokens')}`}>Tokens</Link>
           
           {/* User Section */}
           <div className="flex items-center gap-4 ml-6 pl-6 border-l border-white/20">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { authFetch } from '../services/authService';
+import { API_ENDPOINTS } from '../services/api';
 
 const AddPoet = () => {
     const [poets, setPoets] = useState([]);
@@ -21,7 +22,7 @@ const AddPoet = () => {
     }, []);
 
     const fetchPoets = () => {
-        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/getPoets")
+        authFetch(API_ENDPOINTS.GET_POETS)
             .then(res => res.json())
             .then(data => setPoets(data))
             .catch(err => console.error("Error fetching poets:", err));
@@ -50,7 +51,7 @@ const AddPoet = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this poet?")) return;
 
-        authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/deletePoet/${id}`, { method: "DELETE" })
+        authFetch(API_ENDPOINTS.DELETE_POET(id), { method: "DELETE" })
             .then(() => {
                 setPoets(prev => prev.filter(poet => poet.poetId !== id));
             })
@@ -61,8 +62,8 @@ const AddPoet = () => {
         e.preventDefault();
 
         const url = isEditing
-            ? "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/updatePoet"
-            : "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/addPoet";
+            ? API_ENDPOINTS.UPDATE_POET
+            : API_ENDPOINTS.ADD_POET;
 
         const method = isEditing ? "PUT" : "POST";
 

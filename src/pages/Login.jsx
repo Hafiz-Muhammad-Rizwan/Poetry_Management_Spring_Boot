@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_ENDPOINTS } from '../services/api';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const Login = () => {
         setError('');
 
         try {
-            const response = await fetch('https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/users/Login', {
+            const response = await fetch(API_ENDPOINTS.LOGIN, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

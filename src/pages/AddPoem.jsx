@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { authFetch } from '../services/authService';
+import { API_ENDPOINTS } from '../services/api';
 
 const AddPoem = () => {
     const [poems, setPoems] = useState([]);
@@ -29,21 +30,21 @@ const AddPoem = () => {
     }, []);
 
     const fetchPoems = () => {
-        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/getPoems")
+        authFetch(API_ENDPOINTS.GET_POEMS)
             .then(res => res.json())
             .then(data => setPoems(data))
             .catch(err => console.error("Error fetching poems:", err));
     };
 
     const fetchPoets = () => {
-        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poets/getPoets")
+        authFetch(API_ENDPOINTS.GET_POETS)
             .then(res => res.json())
             .then(data => setPoets(data))
             .catch(err => console.error("Error fetching poets:", err));
     };
 
     const fetchBooks = () => {
-        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+        authFetch(API_ENDPOINTS.GET_BOOKS)
             .then(res => res.json())
             .then(data => setBooks(data))
             .catch(err => console.error("Error fetching books:", err));
@@ -78,7 +79,7 @@ const AddPoem = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this poem?")) return;
 
-        authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/deletePoem/${id}`, { method: "DELETE" })
+        authFetch(API_ENDPOINTS.DELETE_POEM(id), { method: "DELETE" })
             .then(() => {
                 setPoems(prev => prev.filter(poem => poem.poemId !== id));
             })
@@ -89,8 +90,8 @@ const AddPoem = () => {
         e.preventDefault();
 
         const url = isEditing
-            ? "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/updatePoem"
-            : "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/poems/addPoem";
+            ? API_ENDPOINTS.UPDATE_POEM
+            : API_ENDPOINTS.ADD_POEM;
 
         const method = isEditing ? "PUT" : "POST";
         console.log("Sending request...");

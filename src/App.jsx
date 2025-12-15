@@ -9,6 +9,9 @@ import AddPoet from './pages/AddPoet';
 import AddBook from './pages/AddBook';
 import AddPoem from './pages/AddPoem';
 import AddVerse from './pages/AddVerse';
+import AddLema from './pages/AddLema';
+import AddRoot from './pages/AddRoot';
+import AddToken from './pages/AddToken';
 import { authService } from './services/authService';
 import './App.css';
 
@@ -57,6 +60,27 @@ function App() {
           <ProtectedRoute>
             <Layout>
               <AddVerse />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        <Route path="/lemmas" element={
+          <ProtectedRoute>
+            <Layout>
+              <AddLema />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        <Route path="/roots" element={
+          <ProtectedRoute>
+            <Layout>
+              <AddRoot />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        <Route path="/tokens" element={
+          <ProtectedRoute>
+            <Layout>
+              <AddToken />
             </Layout>
           </ProtectedRoute>
         } />

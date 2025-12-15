@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { authFetch } from '../services/authService';
+import { API_ENDPOINTS } from '../services/api';
 
 const AddBook = () => {
     const [books, setBooks] = useState([]);
@@ -16,7 +17,7 @@ const AddBook = () => {
     });
 
     useEffect(() => {
-        authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+        authFetch(API_ENDPOINTS.GET_BOOKS)
             .then(res => res.json())
             .then(data => setBooks(data))
             .catch(err => console.error("Error fetching books:", err));
@@ -42,7 +43,7 @@ const AddBook = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this book?")) return;
 
-        authFetch(`https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/deleteBook/${id}`, { method: "DELETE" })
+        authFetch(API_ENDPOINTS.DELETE_BOOK(id), { method: "DELETE" })
             .then(() => {
                 setBooks(prev => prev.filter(book => book.BookId !== id));
             });
@@ -52,8 +53,8 @@ const AddBook = () => {
         e.preventDefault();
 
         const url = isEditing
-            ? "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/updateBook"
-            : "https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/addBook";
+            ? API_ENDPOINTS.UPDATE_BOOK
+            : API_ENDPOINTS.ADD_BOOK;
 
         const method = isEditing ? "PUT" : "POST";
 
@@ -62,7 +63,7 @@ const AddBook = () => {
             body: JSON.stringify(formData)
         })
             .then(() => {
-                authFetch("https://sheltered-mountain-64913-f230179cbd70.herokuapp.com/books/getBooks")
+                authFetch(API_ENDPOINTS.GET_BOOKS)
                     .then(res => res.json())
                     .then(data => setBooks(data));
                 setShowModal(false);
